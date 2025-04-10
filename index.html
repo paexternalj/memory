@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Image with Param</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+      font-family: sans-serif;
+    }
+    .wrapper {
+      text-align: center;
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .wrapper img {
+      max-width: 150px;
+      margin-bottom: 1em;
+    }
+    .param-value {
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h2>Dynamic Image with Query Param</h2>
+    <img id="dynamicImage" src="img.png" alt="Dynamic Image" />
+    <div class="param-value" id="paramDisplay">Loading...</div>
+  </div>
+
+  <script>
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      const pairs = queryString.split("&");
+
+      for (const pair of pairs) {
+        const [key, value] = pair.split("=");
+        if (key) {
+          params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+        }
+      }
+      return params;
+    }
+
+    function updateContent() {
+      const params = getQueryParams();
+      const pValue = params["p"];
+
+      const img = document.getElementById("dynamicImage");
+      const display = document.getElementById("paramDisplay");
+
+      if (pValue) {
+        img.src = `https://imagelink.com/static/pixel.png?p=${encodeURIComponent(pValue)}`;
+        display.textContent = `Value of p: ${pValue}`;
+      } else {
+        display.textContent = "No 'p' value provided in URL.";
+      }
+    }
+
+    updateContent();
+  </script>
+</body>
+</html>
